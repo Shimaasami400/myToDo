@@ -98,16 +98,15 @@
             
             switch (_statusSegment.selectedSegmentIndex) {
                 case 0:
-                    statuePriority = @"ToDo";
+                    statuePriority = @"0";
                     break;
                 case 1:
-                    statuePriority = @"Doing";
+                    statuePriority = @"1";
                     break;
                 case 2:
-                    statuePriority = @"Done";
+                    statuePriority = @"2";
                     break;
                 default:
-                    statuePriority = @"ToDo";
                     break;
             }
             
@@ -118,7 +117,9 @@
             updatedTask.status = statuePriority;
             
         
-            [tasksArray replaceObjectAtIndex:self.index withObject:updatedTask];
+           // [tasksArray replaceObjectAtIndex:self.index withObject:updatedTask];
+            
+            tasksArray [_index]  = updatedTask;
                         
             NSData *updatedTasksData = [NSKeyedArchiver archivedDataWithRootObject:tasksArray];
                         

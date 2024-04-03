@@ -74,7 +74,7 @@
         NSMutableArray *tasksArray = [NSKeyedUnarchiver unarchiveObjectWithData:tasksData];
         
         for (NewTask *task in tasksArray) {
-            if ([task.status isEqualToString:@"Doing"]) {
+            if ([task.status isEqualToString:@"1"]) {
                 [inProgressList addObject:task];
             }
         }

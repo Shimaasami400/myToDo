@@ -74,7 +74,7 @@
         NSMutableArray *tasksArray = [NSKeyedUnarchiver unarchiveObjectWithData:tasksData];
         
         for (NewTask *task in tasksArray) {
-            if ([task.status isEqualToString:@"Done"]) {
+            if ([task.status isEqualToString:@"2"]) {
                 [doneList addObject:task];
             }
         }

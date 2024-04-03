@@ -42,16 +42,20 @@
     _toDoTable.dataSource = self;
     _searchBar.delegate = self;
         
-    highFilteredList = [NSMutableArray array];
-    midFilteredList  = [NSMutableArray array];
-    lowFilteredList  = [NSMutableArray array];
-    
+//    highFilteredList = [NSMutableArray array];
+//    midFilteredList  = [NSMutableArray array];
+//    lowFilteredList  = [NSMutableArray array];
+//    
     [self loadTasksFromUserDefaults];
     [self filterTasksByPriority];
     self.taskes = toDoList;
 }
 
 - (void)filterTasksByPriority {
+    highFilteredList = [NSMutableArray array];
+    midFilteredList  = [NSMutableArray array];
+    lowFilteredList  = [NSMutableArray array];
+    
     for (NewTask *task in toDoList) {
             if ([task.priority isEqualToString:@"High"]) {
                         [highFilteredList addObject:task];
@@ -98,6 +102,9 @@
     NewTask *newTask = toDoList[indexPath.row];
     cell.textLabel.text = newTask.name;
     
+    NSLog(@"newTask.name:%@",newTask.name);
+    NSLog(@"newTask.name:%@",newTask.status);
+    
     if ([newTask.priority isEqualToString:@"High"]) {
             cell.imageView.image = [UIImage imageNamed:@"high"];
         } else if ([newTask.priority isEqualToString:@"Medium"]) {
@@ -130,6 +137,7 @@
             UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
                 
                 [_taskes removeObjectAtIndex:indexPath.row];
+                [toDoList removeObjectAtIndex:indexPath.row];
                 
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 NSData *encodedData = [NSKeyedArchiver archivedDataWithRootObject:_taskes];
@@ -159,20 +167,32 @@
     //[toDoList addObject:newTaskObject];
     //[self.toDoTable reloadData];
     [self loadTasksFromUserDefaults];
+    [self filterTasksByPriority];
 }
 
 
 - (void)loadTasksFromUserDefaults {
+    toDoList = [NSMutableArray new];
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSData *tasksData = [defaults objectForKey:@"ToDoListTasks"];
     
     if (tasksData !=nil) {
         NSMutableArray *tasksArray = [NSKeyedUnarchiver unarchiveObjectWithData:tasksData];
-        if ([tasksArray count] != 0) {
+//        if ([tasksArray count] != 0) {
             //[toDoList addObjectsFromArray:tasksArray];
-            toDoList = tasksArray;
+            
+            for(int i=0;i<[tasksArray count];i++){
+                NewTask *newTask = tasksArray[i];
+                if([newTask.status isEqualToString:@"0"]){
+                    [toDoList addObject:newTask];
+                }
+                
+            }
+            
+            //toDoList = tasksArray;
             [self.toDoTable reloadData];
-        }
+       // }
     }
 }
 
